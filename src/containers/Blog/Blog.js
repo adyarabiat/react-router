@@ -5,9 +5,6 @@ import axiosInstance from "../../axiosInstance";
 // import react-router AND react-router-dom
 // npm install --save react-router react-router-dom
 
-import Post from "../../components/Post/Post";
-import FullPost from "../../components/FullPost/FullPost";
-import NewPost from "../../components/NewPost/NewPost";
 import styles from "./Blog.module.css";
 
 class Blog extends Component {
@@ -64,7 +61,7 @@ class Blog extends Component {
     }
 
     return (
-      <div>
+      <div className={styles.Blog}>
         <header>
           <ul>
             <li>
@@ -76,12 +73,6 @@ class Blog extends Component {
           </ul>
         </header>
         <section className={styles.Posts}>{post}</section>
-        <section>
-          <FullPost id={this.state.selectedPostId} />
-        </section>
-        <section>
-          <NewPost />
-        </section>
       </div>
     );
   }
