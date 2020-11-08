@@ -1,0 +1,143 @@
+Routing :
+
+// first thing first we have to always go to the root element like index.js or App.js and import { BrowserRouter} from 'react-rounter-dom' and then to wrrape the main or the container component with  <BrowserRouter>
+
+// then we in that component now we can use React router
+
+// <Route path="/" exact render={() => <h1>Home 1</h1>} />
+
+//Route can take three things:
+
+// 1. path ='/' this path is mandaitory so we choose where to go from here
+// 2. exact which is means if i want to be at the exact path or not so it means if we say /asd;a;dk it will go for it if there is no exact
+// 3.render which is means what to show on the screen when we route to that link
+
+// ************************************************************
+
+// Link :
+
+// So we use the link instead of <a></a> to navigate to a place that i specify in teh <Route></Route> so i connect them by using (to) the path that i create it in the Route
+// ************************************************************
+
+// Using the props in Routing:
+
+// If i go to Posts component and console.log(this.props) will find something giving to use from react-router there we will find things usfull as example history and match  if we remeber we used to use it alot to specify some stuff with Steaphen
+// also if i go to NewPost component and i console.log(this.props) will find things there as well and it also the same will give me the info about that route that i create and what path and more usfull info
+// ************************************************************
+
+// withRouter
+
+// So we are here passing the Route to Posts and NewPosts so what about the Post which is a child component of Posts ?? if we check there and we console.log (props) will find that there is no info passed to it like history and match !!! will find props like the normal ones comes with like auther click and thos but not the routing things
+
+// So to pass these info to the child we have to use withRouter by importing it and wrrape it as High order compoent to export default Post by doing withRouter(Post)
+// import { withRouter } from "react-router-dom";
+// export default withRouter(post);
+// ************************************************************
+
+Absolute vs Relative Paths
+
+So we have path='/posts'
+we can decide weather it is an absloute or Relative path but what does that means??
+well 
+Absolute path: which is comes always after the domain url which is like 
+ady.arabiat.com/Posts so this is Absolute path which is always attached to my website but the Relative path it is comes after this so for example
+ady.arabiat.com/Posts/new-post So here new post attached to Post which is absloute and then I can make more relives path 
+No to make this relives we can use 
+pathname: this.props.match.url + '/new-post' so i attached this to my current url
+
+at the end it does not mattar which approch im using it is just for my info 
+// ************************************************************
+Styling the Active Route
+
+Here we have to specify which link is active i mean here when we click on it so it is active 
+
+to do so we have to change the Link to NavLink it will give the active link class=active to it so we can add styling to it or we can overwrite that class=active to call it something ealse so we use for that activeClassName={styles.active}}so here we overwrite it then when we click on it 
+NOTE:
+here in this section it does not work how it work with Max I think becouse i'm using modules so to solve this issue just check this :
+
+<NavLink exact activeClassName={styles.active} to="/">
+      Home
+  </NavLink>
+  </li>
+ <li> 
+<NavLink exact activeClassName={styles.active} to="/new-post">
+    New Post
+</NavLink>
+
+So we have activeClassName we can use it to stye the active classes and add name to it and also if i want to style it in line we can use activeStyle{{}} and give styling like the normal inline styling
+// ************************************************************
+Dynamicly get the Paths
+
+So when we create the Route we give it path so if it is fixed path like path='/page'
+it is fine but if i want like in my case generate path depends on what im fetching or on things i can not tell what it is we can use any name or do any logic to generate it but in the Route we say path="/:Then the name" so i have to give it name but to tell Route that it will be dynamice we have to add /: before it 
+So it tell React-Router hey when you see /:'something' this compoenent i need 
+
+then in the link area we can make that logic like Link to=`/:${here}`
+
+here we we should take care of the priority which one before 
+becouse here we can not put path="/new-post" after path="/:id" becouse if we do so we might catch something wrong in the :/id:
+I mean here we say we need exact path of path="/new-post" so if i put the :id before it , it might catch the new-post as that id so that is why i have to put it before it so it will take it before we catch it 
+
+<Route path="/" exact component={Posts} />
+<Route path="/new-post" exact component={NewPost} />
+<Route path="/:id" exact component={FullPost} />
+// ************************************************************
+Mixed the routes !!! (Switch)
+
+So if I navigate to home then I clikced on one of the posts then i clicked on new post it will render both the current one and the new post !!!
+
+becouse when I use /:id it will take any values ! not just id so to solve this we have two solutions:
+1. to give it another name like "/posts/id"
+2. to wrrape all the routes with <Switch/> this one it will not accept to redner more than one Route and withoit changing the name 
+
+// ************************************************************
+Navigating Programmatically:
+
+  // Here we use alternative way of using the Link to enter the post and give a fullPost so instead of making it as Link we can use the onClick and do this :
+  this.props.history.push(`/${id}`);
+
+// ************************************************************
+
+Redirect
+
+It is provided by react-router-dom and we can use it to redirect the url 
+<Redirect from="/" to="posts" />
+so if we put in the url http://localhost:3000/ it will redirected to http://localhost:3000/post 
+
+so it is really usfull 
+we can also use it when we go to new post and after we submitt to go back to posts we can use it there by set the state to submitted then after we post the data in axios we can set the state to true then in the redner says if it true redirect to posts 
+This way is good but when we redirect to posts if we click on back on the browser we can not go back again So to solve this there is a better way to do it we can use the history:
+
+this.props.history.push("/posts");
+
+So we put this one after in axios when we post the data so after it posted we say push('/posts') so it will take us there and also we can click on back on the browser!
+
+Or we also use 
+this.props.history.replace("/posts");
+
+Which is do the same but we can't go back by clicking on the back by the browser So it does the same as Redirecting 
+
+// ************************************************************
+
+Working With Guards
+
+This is like if i do not want the user to to make a new post if he is not authenticated so all what we have to do is to make Route show conditionally check the blog coponent how we do it 
+
+// ************************************************************
+
+Handling the 404 Case (Unknown Routes)
+
+here we assume that we click on we navigate to a route and it is Unknown 
+
+So here if we click on any thing and there is no route for it or Unknown we can use for it 
+
+ <Route render={() => <h1>Not Found!!</h1>} />
+
+ So here we are not giving a path we just use component so we can create a speical component for it or we can render it on the spot like here but the main key to not give a path and it should come last one to not catch by anything else so it will come as a last thing that there is no other path to go to 
+
+
+// ************************************************************
+
+Loading Routes Lazily
+
+when we navigate to posts or new post it will upload all the files  in the network so it is uploading lots of files we do not need it 
