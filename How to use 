@@ -91,7 +91,7 @@ becouse when I use /:id it will take any values ! not just id so to solve this w
 2. to wrrape all the routes with <Switch/> this one it will not accept to redner more than one Route and withoit changing the name 
 
 // ************************************************************
-Navigating Programmatically:
+Navigating Programmatically: 
 
   // Here we use alternative way of using the Link to enter the post and give a fullPost so instead of making it as Link we can use the onClick and do this :
   this.props.history.push(`/${id}`);
@@ -141,3 +141,30 @@ So here if we click on any thing and there is no route for it or Unknown we can 
 Loading Routes Lazily
 
 when we navigate to posts or new post it will upload all the files  in the network so it is uploading lots of files we do not need it 
+
+So to do it here in React 16 or more we do the following 
+
+1. instead of import NewPost we say :
+
+const NewPost = React.lazy(() => {
+  return import("../../containers/Blog/NewPost/NewPost");
+});
+
+the import here contain the same direction for NewPost
+
+2. we import from react Suspense
+
+3. we make it like this after 
+
+<Route path="/new-post" exact render={() => (
+                <Suspense fallback={<div>Loading....</div>}>
+                  <NewPost />
+                </Suspense>
+              )}
+            />
+// ************************************************************
+Routing and Server Deployment
+
+Always when we want to deploy our to the server we have to give it a basename to navaigate for it first like bellow 
+
+ <BrowserRouter basename="my-app">
